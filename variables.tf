@@ -13,7 +13,7 @@ variable "associate_public_ip_address" {
 variable "assign_eip_address" {
   type        = bool
   description = "Assign an Elastic IP address to the instance"
-  default     = true
+  default     = false
 }
 
 variable "user_data" {
@@ -40,10 +40,10 @@ variable "burstable_mode" {
   default     = null
 }
 
-variable "vpc_id" {
-  type        = string
-  description = "The ID of the VPC that the instance security group belongs to"
-}
+# variable "vpc_id" {
+#   type        = string
+#   description = "The ID of the VPC that the instance security group belongs to"
+# }
 
 variable "security_group_enabled" {
   type        = bool
@@ -400,4 +400,28 @@ variable "external_network_interfaces" {
   }))
   description = "The external interface definitions to attach to the instances. This depends on the instance type"
   default     = null
+}
+
+variable "metadata_http_endpoint" {
+  type        = string
+  default     = "enabled"
+  description = "Whether the metadata service is available"
+}
+
+variable "metadata_instance_metadata_tags" {
+  type        = string
+  default     = "enabled"
+  description = "Whether the tags are enabled in the metadata service."
+}
+
+variable "metadata_http_tokens" {
+  type        = string
+  default     = "required"
+  description = "Whether or not the metadata service requires session tokens, also referred to as Instance Metadata Service Version 2."
+}
+
+variable "volume_tags" {
+  type        = map(string)
+  description = "A map of tags to assign to the devices created by the instance at launch time."
+  default     = {}
 }

@@ -16,12 +16,12 @@ locals {
   ami_owner              = var.ami != "" ? var.ami_owner : one(data.aws_ami.default[*].owner_id)
   root_volume_type       = var.root_volume_type != "" ? var.root_volume_type : one(data.aws_ami.info[*].root_device_type)
 
-  region_domain  = local.region == "us-east-1" ? "compute-1.amazonaws.com" : "${local.region}.compute.amazonaws.com"
-  eip_public_dns = var.associate_public_ip_address && var.assign_eip_address && module.this.enabled ? "ec2-${replace(one(aws_eip.default[*].public_ip), ".", "-")}.${local.region_domain}" : ""
-  public_dns = (
-    var.associate_public_ip_address && var.assign_eip_address && module.this.enabled ?
-    local.eip_public_dns : one(aws_instance.default[*].public_dns)
-  )
+  region_domain = local.region == "us-east-1" ? "compute-1.amazonaws.com" : "${local.region}.compute.amazonaws.com"
+  # eip_public_dns = var.associate_public_ip_address && var.assign_eip_address && module.this.enabled ? "ec2-${replace(one(aws_eip.default[*].public_ip), ".", "-")}.${local.region_domain}" : ""
+  # public_dns = (
+  #   var.associate_public_ip_address && var.assign_eip_address && module.this.enabled ?
+  #   local.eip_public_dns : one(aws_instance.default[*].public_dns)
+  # )
 }
 
 data "aws_caller_identity" "default" {
@@ -127,7 +127,7 @@ resource "aws_instance" "default" {
 
   vpc_security_group_ids = var.external_network_interface_enabled ? null : compact(
     concat(
-      formatlist("%s", module.security_group.id),
+      # formatlist("%s", module.security_group.id),
       var.security_groups
     )
   )
@@ -153,10 +153,10 @@ resource "aws_instance" "default" {
   }
 
   metadata_options {
-    http_endpoint               = var.metadata_http_endpoint_enabled ? "enabled" : "disabled"
-    instance_metadata_tags      = var.metadata_tags_enabled ? "enabled" : "disabled"
+    http_endpoint               = var.metadata_http_endpoint
+    instance_metadata_tags      = var.metadata_instance_metadata_tags
     http_put_response_hop_limit = var.metadata_http_put_response_hop_limit
-    http_tokens                 = var.metadata_http_tokens_required ? "required" : "optional"
+    http_tokens                 = var.metadata_http_tokens
   }
 
   credit_specification {
@@ -165,7 +165,7 @@ resource "aws_instance" "default" {
 
   tags = module.this.tags
 
-  volume_tags = var.volume_tags_enabled ? module.this.tags : {}
+  volume_tags = var.volume_tags
 }
 
 resource "aws_eip" "default" {
