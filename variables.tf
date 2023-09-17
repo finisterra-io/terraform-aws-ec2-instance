@@ -425,3 +425,25 @@ variable "volume_tags" {
   description = "A map of tags to assign to the devices created by the instance at launch time."
   default     = {}
 }
+
+variable "device_name_list" {
+  description = "Details of the EBS devices to mount"
+
+  type = map(object({
+    size       = optional(number)
+    iops       = optional(number)
+    throughput = optional(number)
+    type       = optional(string)
+    tags       = optional(map(string))
+    encrypted  = optional(bool)
+    kms_key_id = optional(string)
+  }))
+
+  default = {}
+}
+
+variable "root_block_device_tags" {
+  type        = map(string)
+  description = "A map of tags to assign to the devices created by the instance at launch time."
+  default     = {}
+}

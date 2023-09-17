@@ -150,6 +150,7 @@ resource "aws_instance" "default" {
     delete_on_termination = var.delete_on_termination
     encrypted             = var.root_block_device_encrypted
     kms_key_id            = var.root_block_device_kms_key_id
+    tags                  = var.root_block_device_tags
   }
 
   metadata_options {
@@ -165,7 +166,7 @@ resource "aws_instance" "default" {
 
   tags = module.this.tags
 
-  volume_tags = var.volume_tags
+  # volume_tags = var.volume_tags
 }
 
 resource "aws_eip" "default" {
@@ -177,20 +178,20 @@ resource "aws_eip" "default" {
 }
 
 resource "aws_ebs_volume" "default" {
-  count             = local.volume_count
+  for_each          = var.device_name_list
   availability_zone = local.availability_zone
-  size              = var.ebs_volume_size
-  iops              = local.ebs_iops
-  throughput        = local.ebs_throughput
-  type              = var.ebs_volume_type
-  tags              = module.this.tags
-  encrypted         = var.ebs_volume_encrypted
-  kms_key_id        = var.kms_key_id
+  size              = each.value.size
+  iops              = each.value.iops
+  throughput        = each.value.throughput
+  type              = each.value.type
+  tags              = each.value.tags
+  encrypted         = each.value.encrypted
+  kms_key_id        = each.value.kms_key_id
 }
 
 resource "aws_volume_attachment" "default" {
-  count       = local.volume_count
-  device_name = var.ebs_device_name[count.index]
-  volume_id   = aws_ebs_volume.default[count.index].id
+  for_each    = var.device_name_list
+  device_name = each.key
+  volume_id   = aws_ebs_volume.default[each.key].id
   instance_id = one(aws_instance.default[*].id)
 }

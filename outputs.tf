@@ -71,10 +71,10 @@ output "additional_eni_ids" {
   )
 }
 
-output "ebs_ids" {
-  description = "IDs of EBSs"
-  value       = aws_ebs_volume.default[*].id
-}
+# output "ebs_ids" {
+#   description = "IDs of EBSs"
+#   value       = aws_ebs_volume.default[*].id
+# }
 
 output "primary_network_interface_id" {
   description = "ID of the instance's primary network interface"
