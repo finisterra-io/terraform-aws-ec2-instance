@@ -3,8 +3,8 @@ locals {
   instance_count = local.enabled ? 1 : 0
   volume_count   = var.ebs_volume_count > 0 && local.instance_count > 0 ? var.ebs_volume_count : 0
   # create an instance profile if the instance is enabled and we aren't given one to use
-  instance_profile_count = module.this.enabled && var.instance_profile == "" ? 1 : 0
-  instance_profile       = var.instance_profile != "" ? var.instance_profile : one(aws_iam_instance_profile.default[*].name)
+  # instance_profile_count = module.this.enabled && var.instance_profile == "" ? 1 : 0
+  # instance_profile       = var.instance_profile != "" ? var.instance_profile : one(aws_iam_instance_profile.default[*].name)
   security_group_enabled = module.this.enabled && var.security_group_enabled
   region                 = var.region != "" ? var.region : data.aws_region.default.name
   root_iops              = contains(["io1", "io2", "gp3"], var.root_volume_type) ? var.root_iops : null
