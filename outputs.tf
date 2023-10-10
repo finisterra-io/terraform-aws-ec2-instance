@@ -48,15 +48,15 @@ output "security_group_ids" {
   )
 }
 
-output "role" {
-  description = "Name of AWS IAM Role associated with the instance"
-  value       = local.instance_profile_count > 0 ? one(aws_iam_role.default[*].name) : one(data.aws_iam_instance_profile.given[*].role_name)
-}
+/* output "role" { */
+/*   description = "Name of AWS IAM Role associated with the instance" */
+/*   value       = local.instance_profile_count > 0 ? one(aws_iam_role.default[*].name) : one(data.aws_iam_instance_profile.given[*].role_name) */
+/* } */
 
-output "role_arn" {
-  description = "ARN of AWS IAM Role associated with the instance"
-  value       = local.instance_profile_count > 0 ? one(aws_iam_role.default[*].arn) : one(data.aws_iam_instance_profile.given[*].role_arn)
-}
+/* output "role_arn" { */
+/*   description = "ARN of AWS IAM Role associated with the instance" */
+/*   value       = local.instance_profile_count > 0 ? one(aws_iam_role.default[*].arn) : one(data.aws_iam_instance_profile.given[*].role_arn) */
+/* } */
 
 # output "alarm" {
 #   description = "CloudWatch Alarm ID"
