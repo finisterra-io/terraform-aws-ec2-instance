@@ -81,10 +81,10 @@ output "primary_network_interface_id" {
   value       = one(aws_instance.default[*].primary_network_interface_id)
 }
 
-output "instance_profile" {
-  description = "Name of the instance's profile (either built or supplied)"
-  value       = local.instance_profile
-}
+/* output "instance_profile" { */
+/*   description = "Name of the instance's profile (either built or supplied)" */
+/*   value       = local.instance_profile */
+/* } */
 
 # output "security_group_id" {
 #   value       = module.security_group.id
