@@ -81,38 +81,39 @@ data "aws_ami" "info" {
   owners = [local.ami_owner]
 }
 
-data "aws_iam_instance_profile" "given" {
-  count = local.enabled && var.instance_profile != "" ? 1 : 0
-  name  = var.instance_profile
-}
+# data "aws_iam_instance_profile" "given" {
+#   count = local.enabled && var.instance_profile != "" ? 1 : 0
+#   name  = var.instance_profile
+# }
 
-resource "aws_iam_instance_profile" "default" {
-  count = local.instance_profile_count
-  name  = module.this.id
-  role  = one(aws_iam_role.default[*].name)
-}
+# resource "aws_iam_instance_profile" "default" {
+#   count = local.instance_profile_count
+#   name  = module.this.id
+#   role  = one(aws_iam_role.default[*].name)
+# }
 
-resource "aws_iam_role" "default" {
-  count                = local.instance_profile_count
-  name                 = module.this.id
-  path                 = "/"
-  assume_role_policy   = data.aws_iam_policy_document.default.json
-  permissions_boundary = var.permissions_boundary_arn
-  tags                 = module.this.tags
-}
+# resource "aws_iam_role" "default" {
+#   count                = local.instance_profile_count
+#   name                 = module.this.id
+#   path                 = "/"
+#   assume_role_policy   = data.aws_iam_policy_document.default.json
+#   permissions_boundary = var.permissions_boundary_arn
+#   tags                 = module.this.tags
+# }
 
 resource "aws_instance" "default" {
   #bridgecrew:skip=BC_AWS_GENERAL_31: Skipping `Ensure Instance Metadata Service Version 1 is not enabled` check until BridgeCrew supports conditional evaluation. See https://github.com/bridgecrewio/checkov/issues/793
   #bridgecrew:skip=BC_AWS_NETWORKING_47: Skiping `Ensure AWS EC2 instance is configured with VPC` because it is incorrectly flagging that this instance does not belong to a VPC even though subnet_id is configured.
-  count                                = local.instance_count
-  ami                                  = local.ami
-  availability_zone                    = local.availability_zone
-  instance_type                        = var.instance_type
-  ebs_optimized                        = var.ebs_optimized
-  disable_api_termination              = var.disable_api_termination
-  user_data                            = var.user_data
-  user_data_base64                     = var.user_data_base64
-  iam_instance_profile                 = local.instance_profile
+  count                   = local.instance_count
+  ami                     = local.ami
+  availability_zone       = local.availability_zone
+  instance_type           = var.instance_type
+  ebs_optimized           = var.ebs_optimized
+  disable_api_termination = var.disable_api_termination
+  user_data               = var.user_data
+  user_data_base64        = var.user_data_base64
+  # iam_instance_profile                 = local.instance_profile
+  iam_instance_profile                 = var.instance_profile
   instance_initiated_shutdown_behavior = var.instance_initiated_shutdown_behavior
   associate_public_ip_address          = var.external_network_interface_enabled ? null : var.associate_public_ip_address
   key_name                             = var.ssh_key_pair
