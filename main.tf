@@ -110,7 +110,7 @@ resource "aws_instance" "default" {
   instance_type           = var.instance_type
   ebs_optimized           = var.ebs_optimized
   disable_api_termination = var.disable_api_termination
-  user_data               = "var.user_data"
+  user_data               = var.user_data
   user_data_base64        = var.user_data_base64
   # iam_instance_profile                 = local.instance_profile
   iam_instance_profile                 = var.instance_profile
@@ -168,6 +168,10 @@ resource "aws_instance" "default" {
   tags = module.this.tags
 
   # volume_tags = var.volume_tags
+
+  lifecycle {
+    ignore_changes = ["user_data"]
+  }
 }
 
 resource "aws_eip" "default" {
