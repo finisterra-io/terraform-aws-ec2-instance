@@ -111,7 +111,7 @@ resource "aws_instance" "default" {
   ebs_optimized           = var.ebs_optimized
   disable_api_termination = var.disable_api_termination
   # user_data               = var.user_data
-  user_data_base64 = var.user_data_base64
+  # user_data_base64 = var.user_data_base64
   # iam_instance_profile                 = local.instance_profile
   iam_instance_profile                 = var.instance_profile
   instance_initiated_shutdown_behavior = var.instance_initiated_shutdown_behavior
