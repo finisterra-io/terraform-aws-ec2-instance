@@ -170,7 +170,7 @@ resource "aws_instance" "default" {
   # volume_tags = var.volume_tags
 
   lifecycle {
-    ignore_changes = ["user_data"]
+    ignore_changes = [user_data]
   }
 }
 
