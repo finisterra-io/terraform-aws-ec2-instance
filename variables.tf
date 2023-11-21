@@ -447,3 +447,15 @@ variable "root_block_device_tags" {
   description = "A map of tags to assign to the devices created by the instance at launch time."
   default     = {}
 }
+
+variable "metadata_http_protocol_ipv6" {
+  type        = string
+  default     = "disabled"
+  description = "Whether IPv6 is enabled for the metadata service."
+}
+
+variable "public_ip_addresses" {
+  type        = map(any)
+  description = "List of public IP addresses to associate with the instance in the VPC"
+  default     = {}
+}

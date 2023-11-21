@@ -156,6 +156,7 @@ resource "aws_instance" "default" {
 
   metadata_options {
     http_endpoint               = var.metadata_http_endpoint
+    http_protocol_ipv6          = var.metadata_http_protocol_ipv6
     instance_metadata_tags      = var.metadata_instance_metadata_tags
     http_put_response_hop_limit = var.metadata_http_put_response_hop_limit
     http_tokens                 = var.metadata_http_tokens
@@ -176,10 +177,11 @@ resource "aws_instance" "default" {
 
 resource "aws_eip" "default" {
   #bridgecrew:skip=BC_AWS_NETWORKING_48: Skiping `Ensure all EIP addresses allocated to a VPC are attached to EC2 instances` because it is incorrectly flagging that this instance does not belong to a VPC even though subnet_id is configured.
-  count    = var.associate_public_ip_address && var.assign_eip_address && module.this.enabled ? 1 : 0
+  # count    = var.associate_public_ip_address && var.assign_eip_address && module.this.enabled ? 1 : 0
+  for_each = module.this.enabled ? var.public_ip_addresses : {}
   instance = one(aws_instance.default[*].id)
   domain   = "vpc"
-  tags     = module.this.tags
+  tags     = each.value.tags
 }
 
 resource "aws_ebs_volume" "default" {
