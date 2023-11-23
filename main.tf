@@ -143,6 +143,16 @@ resource "aws_instance" "default" {
     }
 
   }
+
+  dynamic "launch_template" {
+    for_each = var.launch_template
+    content {
+      id      = launch_template.value.id
+      name    = launch_template.value.name
+      version = launch_template.value.version
+    }
+  }
+
   root_block_device {
     volume_type           = local.root_volume_type
     volume_size           = var.root_volume_size

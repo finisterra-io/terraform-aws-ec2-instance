@@ -459,3 +459,9 @@ variable "public_ip_addresses" {
   description = "List of public IP addresses to associate with the instance in the VPC"
   default     = {}
 }
+
+variable "launch_template" {
+  type        = list(any)
+  description = "Launch template to use for the instance"
+  default     = []
+}
