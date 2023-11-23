@@ -148,7 +148,6 @@ resource "aws_instance" "default" {
     for_each = var.launch_template
     content {
       id      = launch_template.value.id
-      name    = launch_template.value.name
       version = launch_template.value.version
     }
   }
