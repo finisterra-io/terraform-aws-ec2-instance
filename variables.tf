@@ -450,7 +450,7 @@ variable "root_block_device_tags" {
 
 variable "metadata_http_protocol_ipv6" {
   type        = string
-  default     = "disabled"
+  default     = null
   description = "Whether IPv6 is enabled for the metadata service."
 }
 
