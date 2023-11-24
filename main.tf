@@ -123,8 +123,8 @@ resource "aws_instance" "default" {
   secondary_private_ips                = var.external_network_interface_enabled ? null : var.secondary_private_ips
   source_dest_check                    = var.external_network_interface_enabled ? null : var.source_dest_check
   ipv6_address_count                   = var.external_network_interface_enabled && var.ipv6_address_count == 0 ? null : var.ipv6_address_count
-  ipv6_addresses                       = length(var.ipv6_addresses) == 0 ? null : var.ipv6_addresses
-  tenancy                              = var.tenancy
+  # ipv6_addresses                       = length(var.ipv6_addresses) == 0 ? null : var.ipv6_addresses
+  tenancy = var.tenancy
 
   vpc_security_group_ids = var.external_network_interface_enabled ? null : compact(
     concat(
