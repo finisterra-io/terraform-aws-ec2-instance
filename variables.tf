@@ -410,7 +410,7 @@ variable "metadata_http_endpoint" {
 
 variable "metadata_instance_metadata_tags" {
   type        = string
-  default     = "enabled"
+  default     = ""
   description = "Whether the tags are enabled in the metadata service."
 }
 
